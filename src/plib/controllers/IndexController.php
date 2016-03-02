@@ -30,6 +30,11 @@ class IndexController extends pm_Controller_Action
         $this->view->message = "TODO: implement";
     }
 
+    public function scanAction()
+    {
+        $this->view->message = "TODO: implement";
+    }
+
     public function registerAction()
     {
         $this->view->pageTitle = $this->lmsg('controllers.index.register.pageTitle');

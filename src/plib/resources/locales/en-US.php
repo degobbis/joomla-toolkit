@@ -9,6 +9,8 @@ $messages = [
     'components.list.installations.pathColumn' => 'Path',
     'components.list.installations.registerButtonTitle' => 'Register',
     'components.list.installations.registerButtonDesc' => '',
+    'components.list.installations.scanButtonTitle' => 'Scan',
+    'components.list.installations.scanButtonDesc' => '',
 
     'components.form.installation.path' => 'Path',
 
