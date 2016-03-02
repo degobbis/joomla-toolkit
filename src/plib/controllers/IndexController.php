@@ -24,4 +24,9 @@ class IndexController extends pm_Controller_Action
         $list->setDataUrl(['action' => 'list-data']);
         return $list;
     }
+
+    public function viewAction()
+    {
+        $this->view->message = "TODO: implement";
+    }
 }
