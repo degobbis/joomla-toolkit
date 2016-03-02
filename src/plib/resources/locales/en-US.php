@@ -11,6 +11,8 @@ $messages = [
     'components.list.installations.registerButtonDesc' => '',
     'components.list.installations.scanButtonTitle' => 'Scan',
     'components.list.installations.scanButtonDesc' => '',
+    'components.list.installations.pluginButtonTitle' => 'Plugins',
+    'components.list.installations.pluginButtonDesc' => '',
 
     'components.form.installation.path' => 'Path',
 
