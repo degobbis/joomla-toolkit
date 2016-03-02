@@ -29,4 +29,30 @@ class IndexController extends pm_Controller_Action
     {
         $this->view->message = "TODO: implement";
     }
+
+    public function registerAction()
+    {
+        $this->view->pageTitle = $this->lmsg('controllers.index.register.pageTitle');
+        $installation = (new Modules_JoomlaToolkit_Model_Broker_Installations())->createRow();
+        $installation->subscriptionId = pm_Session::getCurrentDomain()->getId();
+
+        $returnUrl = pm_Context::getActionUrl('index', 'list');
+        $form = new Modules_JoomlaToolkit_View_Form_Installation([
+            'installation' => $installation,
+            'returnUrl' => $returnUrl,
+        ]);
+
+        if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
+            try {
+                $form->process();
+            } catch (pm_Exception $e) {
+                $this->_status->addError($e->getMessage());
+                $this->_helper->json(['redirect' => $returnUrl]);
+            }
+            $this->_status->addInfo($this->lmsg('controllers.index.register.successMsg'));
+            $this->_helper->json(['redirect' => $returnUrl]);
+        }
+        $this->_status->addWarning($this->lmsg('controllers.index.register.pageHint'));
+        $this->view->form = $form;
+    }
 }

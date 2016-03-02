@@ -8,6 +8,14 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
 
         $this->setData($this->_fetchData());
         $this->setColumns($this->_getColumns());
+        $this->setTools([
+            [
+                //'class' => '', // TODO: add class with button
+                'title' => $this->lmsg('components.list.installations.registerButtonTitle'),
+                'description' => $this->lmsg('components.list.installations.registerButtonDesc'),
+                'link' => pm_Context::getActionUrl('index', 'register'),
+            ],
+        ]);
     }
 
     private function _fetchData()
