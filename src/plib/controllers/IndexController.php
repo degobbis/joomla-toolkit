@@ -37,6 +37,7 @@ class IndexController extends pm_Controller_Action
         foreach ($subscriptions as $id => $subscription) {
             $vhost = '/var/www/vhosts/' . $subscription;
             $resultFile = tempnam(pm_Context::getVarDir(), 'result_');
+            // TODO: use correct PHP version
             $result = pm_ApiCli::callSbin('cmsscanner.phar', [
                 'cmsscanner:detect',
                 '--report=' . $resultFile,
