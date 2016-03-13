@@ -58,6 +58,9 @@ class IndexController extends pm_Controller_Action
             }
 
             foreach ($result as $installationInfo) {
+                if ('Joomla' != $installationInfo['name']) {
+                    continue;
+                }
                 $installation = $broker->createRow();
                 $installation->subscriptionId = $id;
                 $installation->path = substr($installationInfo['path'], strlen($vhost));
