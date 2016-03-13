@@ -32,6 +32,7 @@ class IndexController extends pm_Controller_Action
 
     public function scanAction()
     {
+        $subscriptions = $this->_getSubscriptions();
         $this->view->message = "TODO: implement";
     }
 
@@ -63,5 +64,32 @@ class IndexController extends pm_Controller_Action
         }
         $this->_status->addWarning($this->lmsg('controllers.index.register.pageHint'));
         $this->view->form = $form;
+    }
+
+    private function _getSubscriptions()
+    {
+        $login = pm_Session::getClient()->getProperty('login');
+        if ('admin' != $login) {
+            return [pm_Session::getCurrentDomain()->getName()];
+        }
+        $request = "<webspace>
+            <get>
+                <filter/>
+                <dataset>
+                    <gen_info/>
+                </dataset>
+            </get>
+        </webspace>";
+        $response = pm_ApiRpc::getService()->call($request);
+        $responseSubscriptions = reset($response->webspace->get);
+        if ($responseSubscriptions instanceof SimpleXMLElement) {
+            $responseSubscriptions = [$responseSubscriptions];
+        }
+
+        $subscriptions = [];
+        foreach ($responseSubscriptions as $subscription) {
+            $subscriptions[] = (string)$subscription->data->gen_info->name;
+        }
+        return $subscriptions;
     }
 }
