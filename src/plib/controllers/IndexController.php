@@ -33,7 +33,8 @@ class IndexController extends pm_Controller_Action
     public function scanAction()
     {
         $subscriptions = $this->_getSubscriptions();
-        $broker = new Modules_JoomlaToolkit_Model_Broker_Installations();
+        $installationsBroker = new Modules_JoomlaToolkit_Model_Broker_Installations();
+        $extensionsBroker = new Modules_JoomlaToolkit_Model_Broker_Extensions();
         foreach ($subscriptions as $id => $subscription) {
             $vhost = '/var/www/vhosts/' . $subscription;
             $resultFile = tempnam(pm_Context::getVarDir(), 'result_');
@@ -58,7 +59,7 @@ class IndexController extends pm_Controller_Action
             $fileManager->removeFile($resultFile);
             $result = json_decode($resultJson, true);
 
-            foreach ($broker->findByField('subscriptionId', $id) as $installation) {
+            foreach ($installationsBroker->findByField('subscriptionId', $id) as $installation) {
                 $installation->delete();
             }
 
@@ -66,12 +67,23 @@ class IndexController extends pm_Controller_Action
                 if ('Joomla' != $installationInfo['name']) {
                     continue;
                 }
-                $installation = $broker->createRow();
+                $installation = $installationsBroker->createRow();
                 $installation->subscriptionId = $id;
                 $installation->sitename = $this->_getInstallationName($installationInfo['path']);
                 $installation->path = substr($installationInfo['path'], strlen($vhost));
                 $installation->version = $installationInfo['version'];
                 $installation->save();
+
+                $extensions = Modules_JoomlaToolkit_JoomlaCli_Update::getInfo($installation);
+                foreach ($extensions as $extensionInfo) {
+                    $extension = $extensionsBroker->createRow();
+                    $extension->installationId = $installation->id;
+                    $extension->name = $extensionInfo['name'];
+                    $extension->currentVersion = $extensionInfo['currentVersion'];
+                    $extension->newVersion = $extensionInfo['newVersion'];
+                    $extension->needsUpdate = $extensionInfo['needsUpdate'];
+                    $extension->save();
+                }
             }
         }
         $this->_status->addInfo($this->lmsg('controllers.index.scan.successMsg'));

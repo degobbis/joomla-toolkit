@@ -5,3 +5,11 @@ CREATE TABLE IF NOT EXISTS `installations` (
   `path` TEXT NOT NULL,
   `version` TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS `extensions` (
+  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  `installationId` INTEGER NOT NULL REFERENCES installations(id) ON DELETE CASCADE,
+  `name` TEXT NOT NULL,
+  `currentVersion` TEXT,
+  `newVersion` TEXT,
+  `needsUpdate` INTEGER NOT NULL
+);

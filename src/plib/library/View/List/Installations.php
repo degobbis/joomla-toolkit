@@ -28,6 +28,7 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
     private function _fetchData()
     {
         $overviewLink = pm_Context::getActionUrl('index', 'view');
+        $extensionLink = pm_Context::getActionUrl('extension', 'list');
 
         $broker = new Modules_JoomlaToolkit_Model_Broker_Installations();
         if (pm_Session::getClient()->isAdmin()) {
@@ -44,6 +45,7 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
                 'subscription' => (new pm_Domain($installation->subscriptionId))->getName(),
                 'path' => "<a href='{$overviewLink}/id/{$installation->id}'>{$this->_view->escape($installation->path)}</a>",
                 'version' => $installation->version,
+                'extensions' => "<a href='{$extensionLink}/id/{$installation->id}'>{$this->lmsg('components.list.installations.manageExtensionsTitle')}</a>",
             ];
         }
 
@@ -66,6 +68,10 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
         }
         $columns['version'] = [
             'title' => $this->lmsg('components.list.installations.versionColumn'),
+        ];
+        $columns['extensions'] = [
+            'title' => $this->lmsg('components.list.installations.extensionsColumn'),
+            'noEscape' => true,
         ];
         return $columns;
     }
