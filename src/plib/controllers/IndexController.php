@@ -76,6 +76,9 @@ class IndexController extends pm_Controller_Action
 
     public function updateAction()
     {
+        if (!$this->getRequest()->isPost()) {
+            throw new Modules_JoomlaToolkit_Exception_PostMethodRequiredException();
+        }
         foreach ((array)$this->_getParam('ids') as $id) {
             /** @var Modules_JoomlaToolkit_Model_Row_Installation $installation */
             $installation = (new Modules_JoomlaToolkit_Model_Broker_Installations())->findOne($id);
@@ -95,6 +98,9 @@ class IndexController extends pm_Controller_Action
 
     public function resetCacheAction()
     {
+        if (!$this->getRequest()->isPost()) {
+            throw new Modules_JoomlaToolkit_Exception_PostMethodRequiredException();
+        }
         foreach ((array)$this->_getParam('ids') as $id) {
             /** @var Modules_JoomlaToolkit_Model_Row_Installation $installation */
             $installation = (new Modules_JoomlaToolkit_Model_Broker_Installations())->findOne($id);
