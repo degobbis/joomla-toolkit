@@ -38,7 +38,8 @@ class Modules_JoomlaToolkit_Helper_ScanVhost
     public static function scanExtensions(Modules_JoomlaToolkit_Model_Row_Installation $installation)
     {
         $extensionsBroker = new Modules_JoomlaToolkit_Model_Broker_Extensions();
-        foreach (Modules_JoomlaToolkit_JoomlaCli_Update::getInfo($installation) as $extensionInfo) {
+        $command = new Modules_JoomlaToolkit_JoomlaCli_Info($installation);
+        foreach ($command->call() as $extensionInfo) {
             $extension = $extensionsBroker->createRow();
             $extension->installationId = $installation->id;
             $extension->name = $extensionInfo['name'];
