@@ -15,7 +15,7 @@ class ExtensionController extends pm_Controller_Action
 
     private function _getInstallation()
     {
-        return (new Modules_JoomlaToolkit_Model_Broker_Installations())->findOne($this->_request->getParam('id'));
+        return (new Modules_JoomlaToolkit_Model_Broker_Installations())->findOne($this->_getParam('id'));
     }
 
     private function _getList(Modules_JoomlaToolkit_Model_Row_Installation $installation)

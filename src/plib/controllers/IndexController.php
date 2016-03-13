@@ -73,4 +73,21 @@ class IndexController extends pm_Controller_Action
         }
         return $subscriptions;
     }
+
+    public function resetCacheAction()
+    {
+        foreach ((array)$this->_getParam('ids') as $id) {
+            /** @var Modules_JoomlaToolkit_Model_Row_Installation $installation */
+            $installation = (new Modules_JoomlaToolkit_Model_Broker_Installations())->findOne($id);
+            $subscription = new pm_Domain($installation->subscriptionId);
+            Modules_JoomlaToolkit_Helper_ScanVhost::scanInstallations($subscription->getId(), $subscription->getName());
+        }
+        $this->_helper->json([
+            'status' => 'success',
+            'statusMessages' => [[
+                'status' => 'info',
+                'content' => $this->lmsg('controllers.index.resetCache.successMsg'),
+            ]],
+        ]);
+    }
 }

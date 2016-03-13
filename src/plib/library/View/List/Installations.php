@@ -15,6 +15,12 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
                 'description' => $this->lmsg('components.list.installations.scanButtonDesc'),
                 'link' => pm_Context::getActionUrl('index', 'scan'),
             ],
+            [
+                //'class' => '', // TODO: add class with button
+                'title' => $this->lmsg('components.list.installations.resetCacheButtonTitle'),
+                'description' => $this->lmsg('components.list.installations.resetCacheButtonDesc'),
+                'execGroupOperation' => pm_Context::getActionUrl('index', 'reset-cache'),
+            ],
         ]);
     }
 
