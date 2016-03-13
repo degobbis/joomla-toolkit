@@ -31,22 +31,54 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
         $extensionLink = pm_Context::getActionUrl('extension', 'list');
 
         $broker = new Modules_JoomlaToolkit_Model_Broker_Installations();
-        if (pm_Session::getClient()->isAdmin()) {
-            $installations = $broker->fetchAll();
-        } else {
-            $installations = $broker->findByField('subscriptionId', pm_Session::getCurrentDomain()->getId());
+        $select = $broker->select()
+            ->setIntegrityCheck(false)
+            ->from(['i'  => 'installations'])
+            ->joinLeft(
+                ['e' => 'extensions'],
+                '(e.installationId = i.id)',
+                'needsUpdate'
+            );
+
+        if (!pm_Session::getClient()->isAdmin()) {
+            $select->where = $broker->getAdapter()->quoteInto('subscriptionId = ?', pm_Session::getCurrentDomain()->getId());
         }
+
+        $installations = $broker->fetchAll($select);
 
         $data = [];
         foreach ($installations as $installation) {
-            $data[] = [
-                'id' => $installation->id,
-                'sitename' => "<a href='{$overviewLink}/id/{$installation->id}'>{$this->_view->escape($installation->sitename)}</a>",
-                'subscription' => (new pm_Domain($installation->subscriptionId))->getName(),
-                'path' => $installation->path,
-                'version' => $installation->version,
-                'extensions' => "<a href='{$extensionLink}/id/{$installation->id}'>{$this->lmsg('components.list.installations.manageExtensionsTitle')}</a>",
-            ];
+            if (!isset($data[$installation->id])) {
+                $data[$installation->id] = [
+                    'id' => $installation->id,
+                    'sitename' => "<a href='{$overviewLink}/id/{$installation->id}'>{$this->_view->escape($installation->sitename)}</a>",
+                    'subscription' => (new pm_Domain($installation->subscriptionId))->getName(),
+                    'path' => $installation->path,
+                    'version' => $installation->version,
+                    'extensionsTotal' => 0,
+                    'extensionsOutdated' => 0,
+                ];
+            }
+            $data[$installation->id]['extensionsTotal']++;
+            if ($installation->needsUpdate == 1) {
+                $data[$installation->id]['extensionsOutdated']++;
+            }
+
+        }
+
+        foreach ($data as &$item) {
+            $extensions = "<a href='{$extensionLink}/id/{$item['id']}'>" .
+                $this->lmsg('components.list.installations.manageExtensionsTitle', ['count' => $item['extensionsTotal']]) .
+                '</a>';
+            if ($item['extensionsOutdated'] > 0) {
+                $extensions .= '<div class="hint-sub hint-attention update-available">' .
+                    $this->lmsg('components.list.installations.extensionsUpdateAvailable', ['outdated' => $item['extensionsOutdated']]) .
+                    "&nbsp;" . '<a href="#" class="jsUpdateItem" data-item-id="YWtpc21ldF8zLjEuNw==" wp-instances="[1]">' .
+                        $this->lmsg('components.list.installations.extensionsUpdateButton') .
+                    '</a>' .
+                '</div>';
+            }
+            $item['extensions'] = $extensions;
         }
 
         return $data;
