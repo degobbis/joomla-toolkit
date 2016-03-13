@@ -38,6 +38,7 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
         foreach ((new Modules_JoomlaToolkit_Model_Broker_Installations())->fetchAll() as $installation) {
             $data[] = [
                 'id' => $installation->id,
+                'subscription' => (new pm_Domain($installation->subscriptionId))->getName(),
                 'path' => "<a href='{$overviewLink}/id/{$installation->id}'>{$this->_view->escape($installation->path)}</a>",
             ];
         }
@@ -47,13 +48,18 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
 
     private function _getColumns()
     {
-        return [
-            pm_View_List_Simple::COLUMN_SELECTION,
-            'path' => [
-                'title' => $this->lmsg('components.list.installations.pathColumn'),
-                'noEscape' => true,
+        $columns = [pm_View_List_Simple::COLUMN_SELECTION];
+        if (pm_Session::getClient()->isAdmin()) {
+            $columns['subscription'] = [
+                'title' => $this->lmsg('components.list.installations.subscriptionColumn'),
                 'searchable' => true,
-            ],
+            ];
+        }
+        $columns['path'] = [
+            'title' => $this->lmsg('components.list.installations.pathColumn'),
+            'noEscape' => true,
+            'searchable' => true,
         ];
+        return $columns;
     }
 }

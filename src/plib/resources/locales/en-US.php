@@ -8,6 +8,7 @@ $messages = [
     'controllers.index.scan.successMsg' => 'Joomla installations scanning finished successfully.',
     'controllers.index.scan.failureMsg' => 'Cannot scan Joomla installations: %%msg%%',
 
+    'components.list.installations.subscriptionColumn' => 'Subscription',
     'components.list.installations.pathColumn' => 'Path',
     'components.list.installations.registerButtonTitle' => 'Register',
     'components.list.installations.registerButtonDesc' => '',
