@@ -32,71 +32,18 @@ class IndexController extends pm_Controller_Action
 
     public function scanAction()
     {
-        $subscriptions = $this->_getSubscriptions();
-        $installationsBroker = new Modules_JoomlaToolkit_Model_Broker_Installations();
-        $extensionsBroker = new Modules_JoomlaToolkit_Model_Broker_Extensions();
-        foreach ($subscriptions as $id => $subscription) {
-            $vhost = '/var/www/vhosts/' . $subscription;
-            $resultFile = tempnam(pm_Context::getVarDir(), 'result_');
-            // TODO: use correct PHP version
-            $result = pm_ApiCli::callSbin('cmsscanner.phar', [
-                'cmsscanner:detect',
-                '--report=' . $resultFile,
-                '--versions',
-                $vhost,
-            ]);
-            if (0 != $result['code']) {
+        foreach ($this->_getSubscriptions() as $id => $subscription) {
+            try {
+                Modules_JoomlaToolkit_Helper_ScanVhost::scanInstallations($id, $subscription);
+            } catch (Modules_JoomlaToolkit_Exception_UtilityException $e) {
                 $this->_status->addError($this->lmsg('controllers.index.scan.failureMsg', [
-                    'msg' => $result['stdout']
+                    'msg' => $e->getMessage()
                 ]));
                 $this->_redirect('index/list');
-            }
-
-            $fileManager = new pm_ServerFileManager();
-            $resultJson = $fileManager->fileGetContents($resultFile);
-            $fileManager->removeFile($resultFile);
-            $result = json_decode($resultJson, true);
-
-            foreach ($installationsBroker->findByField('subscriptionId', $id) as $installation) {
-                $installation->delete();
-            }
-
-            foreach ($result as $installationInfo) {
-                if ('Joomla' != $installationInfo['name']) {
-                    continue;
-                }
-                $installation = $installationsBroker->createRow();
-                $installation->subscriptionId = $id;
-                $installation->sitename = $this->_getInstallationName($installationInfo['path']);
-                $installation->path = substr($installationInfo['path'], strlen($vhost));
-                $installation->version = $installationInfo['version'];
-                $installation->save();
-
-                $extensions = Modules_JoomlaToolkit_JoomlaCli_Update::getInfo($installation);
-                foreach ($extensions as $extensionInfo) {
-                    $extension = $extensionsBroker->createRow();
-                    $extension->installationId = $installation->id;
-                    $extension->name = $extensionInfo['name'];
-                    $extension->currentVersion = $extensionInfo['currentVersion'];
-                    $extension->newVersion = $extensionInfo['newVersion'];
-                    $extension->needsUpdate = $extensionInfo['needsUpdate'];
-                    $extension->save();
-                }
             }
         }
         $this->_status->addInfo($this->lmsg('controllers.index.scan.successMsg'));
         $this->_redirect('index/list');
-    }
-
-    private function _getInstallationName($path)
-    {
-        Modules_JoomlaToolkit_JoomlaCli_Update::checkUpdateScript($path);
-
-        // Call php cli script TODO: it should be run as user with less rights!
-        $result = pm_ApiCli::callSbin("php", [$path . "/cli/update.php", "--sitename"]);
-        $result = json_decode($result['stdout']);
-
-        return $result->sitename ? $result->sitename : "empty";
     }
 
     private function _getSubscriptions()
