@@ -5,6 +5,7 @@ $messages = [
     'controllers.index.scan.successMsg' => 'Joomla installations scanning finished successfully.',
     'controllers.index.scan.failureMsg' => 'Cannot scan Joomla installations: %%msg%%',
     'controllers.index.resetCache.successMsg' => 'Checking for updates was performed.',
+    'controllers.index.update.successMsg' => 'Installations were updated.',
     'controllers.extension.list.pageTitle' => 'Manage extensions',
 
     'components.list.installations.subscriptionColumn' => 'Subscription',
@@ -17,6 +18,8 @@ $messages = [
     'components.list.installations.extensionsUpdateButton' => 'Update all',
     'components.list.installations.scanButtonTitle' => 'Scan',
     'components.list.installations.scanButtonDesc' => '',
+    'components.list.installations.updateButtonTitle' => 'Update',
+    'components.list.installations.updateButtonDesc' => '',
     'components.list.installations.resetCacheButtonTitle' => 'Check for Updates',
     'components.list.installations.resetCacheButtonDesc' => '',
     'components.list.extensions.nameColumn' => 'Name',
