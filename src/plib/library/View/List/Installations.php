@@ -34,8 +34,15 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
     {
         $overviewLink = pm_Context::getActionUrl('index', 'view');
 
+        $broker = new Modules_JoomlaToolkit_Model_Broker_Installations();
+        if (pm_Session::getClient()->isAdmin()) {
+            $installations = $broker->fetchAll();
+        } else {
+            $installations = $broker->findByField('subscriptionId', pm_Session::getCurrentDomain()->getId());
+        }
+
         $data = [];
-        foreach ((new Modules_JoomlaToolkit_Model_Broker_Installations())->fetchAll() as $installation) {
+        foreach ($installations as $installation) {
             $data[] = [
                 'id' => $installation->id,
                 'subscription' => (new pm_Domain($installation->subscriptionId))->getName(),
