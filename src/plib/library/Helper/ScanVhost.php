@@ -55,11 +55,7 @@ class Modules_JoomlaToolkit_Helper_ScanVhost
      */
     private static function _getInstallationName($path)
     {
-        Modules_JoomlaToolkit_JoomlaCli_Update::checkUpdateScript($path);
-
-        // TODO: it should be run as user with less rights!
-        $result = json_decode(Modules_JoomlaToolkit_CallSbinWrapper::callPhp("{$path}/cli/update.php", ['--sitename']));
-        return $result->sitename ? $result->sitename : "empty";
+        return (new Modules_JoomlaToolkit_JoomlaCli_Sitename($path))->call();
     }
 
     /**
