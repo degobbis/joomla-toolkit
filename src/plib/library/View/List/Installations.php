@@ -41,9 +41,9 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
         foreach ($installations as $installation) {
             $data[] = [
                 'id' => $installation->id,
-                'sitename' => $installation->sitename,
+                'sitename' => "<a href='{$overviewLink}/id/{$installation->id}'>{$this->_view->escape($installation->sitename)}</a>",
                 'subscription' => (new pm_Domain($installation->subscriptionId))->getName(),
-                'path' => "<a href='{$overviewLink}/id/{$installation->id}'>{$this->_view->escape($installation->path)}</a>",
+                'path' => $installation->path,
                 'version' => $installation->version,
                 'extensions' => "<a href='{$extensionLink}/id/{$installation->id}'>{$this->lmsg('components.list.installations.manageExtensionsTitle')}</a>",
             ];
@@ -57,11 +57,11 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
         $columns = [pm_View_List_Simple::COLUMN_SELECTION];
         $columns['sitename'] = [
             'title' => $this->lmsg('components.list.installations.sitenameColumn'),
+            'noEscape' => true,
             'searchable' => true,
         ];
         $columns['path'] = [
             'title' => $this->lmsg('components.list.installations.pathColumn'),
-            'noEscape' => true,
             'searchable' => true,
         ];
         if (pm_Session::getClient()->isAdmin()) {
