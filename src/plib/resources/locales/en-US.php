@@ -7,6 +7,7 @@ $messages = [
     'controllers.extension.list.pageTitle' => 'Manage extensions',
 
     'components.list.installations.subscriptionColumn' => 'Subscription',
+    'components.list.installations.sitenameColumn' => 'Name',
     'components.list.installations.pathColumn' => 'Path',
     'components.list.installations.versionColumn' => 'Version',
     'components.list.installations.extensionsColumn' => 'Extensions',
@@ -19,9 +20,6 @@ $messages = [
     'components.list.extensions.versionColumn' => 'Version',
     'components.list.extensions.updateAvailable' => 'New version %%version%% is available.',
     'components.list.extensions.updateButton' => 'Update',
-
-    'components.form.installation.path' => 'Path',
-    'components.form.installation.sitename' => 'Site name',
 
     'components.customButtons.customerJoomlaToolkit' => 'Joomla',
     'components.customButtons.customerJoomlaToolkitDescription' => 'Joomla Toolkit',

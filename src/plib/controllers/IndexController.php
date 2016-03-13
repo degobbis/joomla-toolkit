@@ -52,8 +52,6 @@ class IndexController extends pm_Controller_Action
                 $this->_redirect('index/list');
             }
 
-            // Test
-
             $fileManager = new pm_ServerFileManager();
             $resultJson = $fileManager->fileGetContents($resultFile);
             $fileManager->removeFile($resultFile);
@@ -98,9 +96,10 @@ class IndexController extends pm_Controller_Action
         }
 
         // Call php cli script TODO: it should be run as user with less rights!
-        $result = json_decode(pm_ApiCli::callSbin("php", ["-f", $path . "/cli/update.php", "--sitename"]));
+        $result = pm_ApiCli::callSbin("php", [$path . "/cli/update.php", "--sitename"]);
+        $result = json_decode($result['stdout']);
 
-        return $result->sitename ? $result->sitename : "";
+        return $result->sitename ? $result->sitename : "empty";
     }
 
     private function _getSubscriptions()

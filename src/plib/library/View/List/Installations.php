@@ -55,6 +55,10 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
     private function _getColumns()
     {
         $columns = [pm_View_List_Simple::COLUMN_SELECTION];
+        $columns['sitename'] = [
+            'title' => $this->lmsg('components.list.installations.sitenameColumn'),
+            'searchable' => true,
+        ];
         $columns['path'] = [
             'title' => $this->lmsg('components.list.installations.pathColumn'),
             'noEscape' => true,
