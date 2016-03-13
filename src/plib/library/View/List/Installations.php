@@ -40,6 +40,7 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
         foreach ($installations as $installation) {
             $data[] = [
                 'id' => $installation->id,
+                'sitename' => $installation->sitename,
                 'subscription' => (new pm_Domain($installation->subscriptionId))->getName(),
                 'path' => "<a href='{$overviewLink}/id/{$installation->id}'>{$this->_view->escape($installation->path)}</a>",
                 'version' => $installation->version,

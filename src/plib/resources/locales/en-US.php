@@ -14,6 +14,7 @@ $messages = [
     'components.list.installations.pluginButtonDesc' => '',
 
     'components.form.installation.path' => 'Path',
+    'components.form.installation.sitename' => 'Site name',
 
     'components.customButtons.customerJoomlaToolkit' => 'Joomla',
     'components.customButtons.customerJoomlaToolkitDescription' => 'Joomla Toolkit',

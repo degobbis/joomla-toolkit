@@ -49,6 +49,9 @@ class IndexController extends pm_Controller_Action
                 ]));
                 $this->_redirect('index/list');
             }
+
+            // Test
+
             $fileManager = new pm_ServerFileManager();
             $resultJson = $fileManager->fileGetContents($resultFile);
             $fileManager->removeFile($resultFile);
@@ -64,6 +67,7 @@ class IndexController extends pm_Controller_Action
                 }
                 $installation = $broker->createRow();
                 $installation->subscriptionId = $id;
+                $installation->sitename = $this->_getInstallationName($installationInfo['path']);
                 $installation->path = substr($installationInfo['path'], strlen($vhost));
                 $installation->version = $installationInfo['version'];
                 $installation->save();
@@ -71,6 +75,19 @@ class IndexController extends pm_Controller_Action
         }
         $this->_status->addInfo($this->lmsg('controllers.index.scan.successMsg'));
         $this->_redirect('index/list');
+    }
+
+    private function _getInstallationName($path)
+    {
+        if (!file_exists($path . "/cli/update.php"))
+        {
+            return "none";
+        }
+
+        // Call php cli script TODO: it should be run as user with less rights!
+        $result = json_decode(pm_ApiCli::callSbin("php", ["-f", $path . "/cli/update.php", "--sitename"]));
+
+        return $result->sitename ? $result->sitename : "";
     }
 
     private function _getSubscriptions()
