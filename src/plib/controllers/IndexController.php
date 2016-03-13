@@ -90,10 +90,7 @@ class IndexController extends pm_Controller_Action
 
     private function _getInstallationName($path)
     {
-        if (!file_exists($path . "/cli/update.php"))
-        {
-            return "none";
-        }
+        Modules_JoomlaToolkit_JoomlaCli_Update::checkUpdateScript($path);
 
         // Call php cli script TODO: it should be run as user with less rights!
         $result = pm_ApiCli::callSbin("php", [$path . "/cli/update.php", "--sitename"]);

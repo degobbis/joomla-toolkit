@@ -15,4 +15,16 @@ class Modules_JoomlaToolkit_JoomlaCli_Update
         }
         return json_decode($result['stdout'], true);
     }
+
+    public static function checkUpdateScript($path)
+    {
+        // TODO: remove when will be available in core
+        $fileManager = new pm_ServerFileManager();
+        $file = $path . '/cli/update.php';
+        if ($fileManager->fileExists($file)) {
+            return;
+        }
+        $content = file_get_contents('https://raw.githubusercontent.com/joomla-projects/cli-update/develop/src/cli/update.php');
+        $fileManager->filePutContents($file, $content);
+    }
 }
