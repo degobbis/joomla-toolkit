@@ -40,6 +40,7 @@ class IndexController extends pm_Controller_Action
             $result = pm_ApiCli::callSbin('cmsscanner.phar', [
                 'cmsscanner:detect',
                 '--report=' . $resultFile,
+                '--versions',
                 $vhost,
             ]);
             if (0 != $result['code']) {
@@ -64,6 +65,7 @@ class IndexController extends pm_Controller_Action
                 $installation = $broker->createRow();
                 $installation->subscriptionId = $id;
                 $installation->path = substr($installationInfo['path'], strlen($vhost));
+                $installation->version = $installationInfo['version'];
                 $installation->save();
             }
         }
@@ -124,7 +126,6 @@ class IndexController extends pm_Controller_Action
 
         $subscriptions = [];
         foreach ($responseSubscriptions as $subscription) {
-            pm_Log::vardump($subscription);
             $subscriptions[(int)$subscription->id] = (string)$subscription->data->gen_info->name;
         }
         return $subscriptions;

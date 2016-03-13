@@ -10,6 +10,7 @@ $messages = [
 
     'components.list.installations.subscriptionColumn' => 'Subscription',
     'components.list.installations.pathColumn' => 'Path',
+    'components.list.installations.versionColumn' => 'Version',
     'components.list.installations.registerButtonTitle' => 'Register',
     'components.list.installations.registerButtonDesc' => '',
     'components.list.installations.scanButtonTitle' => 'Scan',

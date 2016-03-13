@@ -47,6 +47,7 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
                 'id' => $installation->id,
                 'subscription' => (new pm_Domain($installation->subscriptionId))->getName(),
                 'path' => "<a href='{$overviewLink}/id/{$installation->id}'>{$this->_view->escape($installation->path)}</a>",
+                'version' => $installation->version,
             ];
         }
 
@@ -66,6 +67,9 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
             'title' => $this->lmsg('components.list.installations.pathColumn'),
             'noEscape' => true,
             'searchable' => true,
+        ];
+        $columns['version'] = [
+            'title' => $this->lmsg('components.list.installations.versionColumn'),
         ];
         return $columns;
     }
