@@ -39,7 +39,11 @@ class IndexController extends pm_Controller_Action
     {
         $this->view->pageTitle = $this->lmsg('controllers.index.register.pageTitle');
         $installation = (new Modules_JoomlaToolkit_Model_Broker_Installations())->createRow();
-        $installation->subscriptionId = pm_Session::getCurrentDomain()->getId();
+        try {
+            $installation->subscriptionId = pm_Session::getCurrentDomain()->getId();
+        } catch (Exception $e) {
+            $installation->subscriptionId = 0;
+        }
 
         $returnUrl = pm_Context::getActionUrl('index', 'list');
         $form = new Modules_JoomlaToolkit_View_Form_Installation([
