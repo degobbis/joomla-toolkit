@@ -18,7 +18,7 @@ class ExtensionController extends pm_Controller_Action
     private function _getList(Modules_JoomlaToolkit_Model_Row_Installation $installation)
     {
         $list = new Modules_JoomlaToolkit_View_List_Extensions($installation, $this->view, $this->_request);
-        $list->setDataUrl(['action' => 'list-data']);
+        $list->setDataUrl(['link' => pm_Context::getActionUrl('extension', 'list-data') . '/id/' . $installation->id]);
         return $list;
     }
 }
