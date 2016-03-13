@@ -11,11 +11,6 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
         $this->setTools([
             [
                 //'class' => '', // TODO: add class with button
-                'title' => $this->lmsg('components.list.installations.registerButtonTitle'),
-                'description' => $this->lmsg('components.list.installations.registerButtonDesc'),
-                'link' => pm_Context::getActionUrl('index', 'register'),
-            ], [
-                //'class' => '', // TODO: add class with button
                 'title' => $this->lmsg('components.list.installations.scanButtonTitle'),
                 'description' => $this->lmsg('components.list.installations.scanButtonDesc'),
                 'link' => pm_Context::getActionUrl('index', 'scan'),
