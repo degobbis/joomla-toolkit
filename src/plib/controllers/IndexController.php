@@ -33,7 +33,39 @@ class IndexController extends pm_Controller_Action
     public function scanAction()
     {
         $subscriptions = $this->_getSubscriptions();
-        $this->view->message = "TODO: implement";
+        $broker = new Modules_JoomlaToolkit_Model_Broker_Installations();
+        foreach ($subscriptions as $id => $subscription) {
+            $vhost = '/var/www/vhosts/' . $subscription;
+            $resultFile = tempnam(pm_Context::getVarDir(), 'result_');
+            $result = pm_ApiCli::callSbin('cmsscanner.phar', [
+                'cmsscanner:detect',
+                '--report=' . $resultFile,
+                $vhost,
+            ]);
+            if (0 != $result['code']) {
+                $this->_status->addError($this->lmsg('controllers.index.scan.failureMsg', [
+                    'msg' => $result['stdout']
+                ]));
+                $this->_redirect('index/list');
+            }
+            $fileManager = new pm_ServerFileManager();
+            $resultJson = $fileManager->fileGetContents($resultFile);
+            $fileManager->removeFile($resultFile);
+            $result = json_decode($resultJson, true);
+
+            foreach ($broker->findByField('subscriptionId', $id) as $installation) {
+                $installation->delete();
+            }
+
+            foreach ($result as $installationInfo) {
+                $installation = $broker->createRow();
+                $installation->subscriptionId = $id;
+                $installation->path = substr($installationInfo['path'], strlen($vhost));
+                $installation->save();
+            }
+        }
+        $this->_status->addInfo($this->lmsg('controllers.index.scan.successMsg'));
+        $this->_redirect('index/list');
     }
 
     public function registerAction()
@@ -70,7 +102,8 @@ class IndexController extends pm_Controller_Action
     {
         $login = pm_Session::getClient()->getProperty('login');
         if ('admin' != $login) {
-            return [pm_Session::getCurrentDomain()->getName()];
+            $subscription = pm_Session::getCurrentDomain();
+            return [$subscription->getId() => $subscription->getName()];
         }
         $request = "<webspace>
             <get>
@@ -88,7 +121,8 @@ class IndexController extends pm_Controller_Action
 
         $subscriptions = [];
         foreach ($responseSubscriptions as $subscription) {
-            $subscriptions[] = (string)$subscription->data->gen_info->name;
+            pm_Log::vardump($subscription);
+            $subscriptions[(int)$subscription->id] = (string)$subscription->data->gen_info->name;
         }
         return $subscriptions;
     }

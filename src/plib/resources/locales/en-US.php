@@ -5,6 +5,8 @@ $messages = [
     'controllers.index.register.pageTitle' => 'Register installation',
     'controllers.index.register.pageHint' => 'This is temporary page. It should be removed after scan functionality implementation.',
     'controllers.index.register.successMsg' => 'Installation was successfully registered',
+    'controllers.index.scan.successMsg' => 'Joomla installations scanning finished successfully.',
+    'controllers.index.scan.failureMsg' => 'Cannot scan Joomla installations: %%msg%%',
 
     'components.list.installations.pathColumn' => 'Path',
     'components.list.installations.registerButtonTitle' => 'Register',
