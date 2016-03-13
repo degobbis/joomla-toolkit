@@ -4,15 +4,18 @@ class ExtensionController extends pm_Controller_Action
 {
     public function listAction()
     {
-        $installation = (new Modules_JoomlaToolkit_Model_Broker_Installations())->findOne($this->_request->getParam('id'));
         $this->view->pageTitle = $this->lmsg('controllers.extension.list.pageTitle');
-        $this->view->list = $this->_getList($installation);
+        $this->view->list = $this->_getList($this->_getInstallation());
     }
 
     public function listDataAction()
     {
-        $installation = (new Modules_JoomlaToolkit_Model_Broker_Installations())->findOne($this->_request->getParam('id'));
-        $this->_helper->json($this->_getList($installation)->fetchData());
+        $this->_helper->json($this->_getList($this->_getInstallation())->fetchData());
+    }
+
+    private function _getInstallation()
+    {
+        return (new Modules_JoomlaToolkit_Model_Broker_Installations())->findOne($this->_request->getParam('id'));
     }
 
     private function _getList(Modules_JoomlaToolkit_Model_Row_Installation $installation)
