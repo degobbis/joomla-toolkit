@@ -40,6 +40,8 @@ $messages = [
 
     'components.form.installation.sitename' => 'Name',
     'components.form.installation.path' => 'Installed in',
+    'components.form.installation.version' => 'Version',
+    'components.form.installation.url' => 'URL',
 
     'components.customButtons.customerJoomlaToolkit' => 'Joomla',
     'components.customButtons.customerJoomlaToolkitDescription' => 'Joomla Toolkit',

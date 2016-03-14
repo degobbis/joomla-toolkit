@@ -15,15 +15,19 @@ class Modules_JoomlaToolkit_View_Form_Installation extends pm_Form_Simple
 
     public function init()
     {
-        $this->addElement('text', 'sitename', [
-            'label' => $this->lmsg('components.form.installation.sitename'),
-            'value' => $this->_installation->sitename,
-            'readonly' => true,
-        ]);
-        $this->addElement('text', 'path', [
-            'label' => $this->lmsg('components.form.installation.path'),
-            'value' => $this->_installation->path,
-            'readonly' => true,
-        ]);
+        $url = $this->_installation->getUrl();
+        $fields = [
+            'sitename' => $this->_installation->sitename,
+            'path' => $this->_installation->path,
+            'version' => $this->_installation->version,
+            'url' => '<a href="' . $url . '" target="_blank">' . $url . '</a>',
+        ];
+        foreach ($fields as $name => $value) {
+            $this->addElement('text', $name, [
+                'label' => $this->lmsg('components.form.installation.' . $name),
+                'value' => $value,
+                'readonly' => true,
+            ]);
+        }
     }
 }

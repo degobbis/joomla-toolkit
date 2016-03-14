@@ -11,4 +11,10 @@
  */
 class Modules_JoomlaToolkit_Model_Row_Installation extends Modules_JoomlaToolkit_Model_Row
 {
+    public function getUrl()
+    {
+        // TODO: process different doc roots
+        $subscription = new pm_Domain($this->subscriptionId);
+        return 'http://' . $subscription->getName() . substr($this->path, strlen('/httpdocs'));
+    }
 }
