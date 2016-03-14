@@ -39,7 +39,7 @@ class ExtensionController extends pm_Controller_Action
         }
         /** @var Modules_JoomlaToolkit_Model_Row_Installation $installation */
         $installation = (new Modules_JoomlaToolkit_Model_Broker_Installations())->findOne($this->_getParam('id'));
-        $command = new Modules_JoomlaToolkit_JoomlaCli_ExtensionsCommand($installation);
+        $command = new Modules_JoomlaToolkit_JoomlaCli_Extensions($installation);
         $command->call();
         Modules_JoomlaToolkit_Helper_ScanVhost::scanExtensions($installation);
 

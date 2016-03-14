@@ -157,4 +157,26 @@ class IndexController extends pm_Controller_Action
         $this->_status->addInfo($this->lmsg('controllers.index.resetCacheItem.successMsg'));
         $this->_redirect('index/view/id/' . $installation->id);
     }
+
+    public function updateExtensionsAction()
+    {
+        if (!$this->getRequest()->isPost()) {
+            throw new Modules_JoomlaToolkit_Exception_PostMethodRequiredException();
+        }
+        foreach ((array)$this->_getParam('ids') as $id) {
+            /** @var Modules_JoomlaToolkit_Model_Row_Installation $installation */
+            $installation = (new Modules_JoomlaToolkit_Model_Broker_Installations())->findOne($id);
+
+            $command = new Modules_JoomlaToolkit_JoomlaCli_Extensions($installation);
+            $command->call();
+            Modules_JoomlaToolkit_Helper_ScanVhost::scanExtensions($installation);
+        }
+        $this->_helper->json([
+            'status' => 'success',
+            'statusMessages' => [[
+                'status' => 'info',
+                'content' => $this->lmsg('controllers.index.updateExtensions.successMsg'),
+            ]],
+        ]);
+    }
 }
