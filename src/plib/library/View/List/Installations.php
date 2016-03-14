@@ -64,11 +64,12 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
                     'extensionsOutdated' => 0,
                 ];
             }
-            $data[$installation->id]['extensionsTotal']++;
-            if ($installation->needsUpdate == 1) {
-                $data[$installation->id]['extensionsOutdated']++;
+            if (!is_null($installation->needsUpdate)) {
+                $data[$installation->id]['extensionsTotal']++;
+                if ($installation->needsUpdate == 1) {
+                    $data[$installation->id]['extensionsOutdated']++;
+                }
             }
-
         }
 
         foreach ($data as &$item) {
