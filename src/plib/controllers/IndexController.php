@@ -27,7 +27,22 @@ class IndexController extends pm_Controller_Action
 
     public function viewAction()
     {
-        $this->view->message = "TODO: implement";
+        /** @var Modules_JoomlaToolkit_Model_Row_Installation $installation */
+        $installation = (new Modules_JoomlaToolkit_Model_Broker_Installations())->findOne($this->_getParam('id'));
+
+        $this->view->pageTitle = $installation->sitename;
+        $this->view->tools = [
+            [
+                'title' => $this->lmsg('controllers.index.view.resetCacheButtonTitle'),
+                'description' => $this->lmsg('controllers.index.view.resetCacheButtonDesc'),
+                //'class' => 'sb-app-info', // TODO: Add class
+                'link' => pm_Context::getActionUrl('index', 'reset-cache-item') . '/id/' . $installation->id,
+            ],
+        ];
+
+        $this->view->form = new Modules_JoomlaToolkit_View_Form_Installation([
+            'installation' => $installation,
+        ]);
     }
 
     public function scanAction()
@@ -114,5 +129,15 @@ class IndexController extends pm_Controller_Action
                 'content' => $this->lmsg('controllers.index.resetCache.successMsg'),
             ]],
         ]);
+    }
+
+    public function resetCacheItemAction()
+    {
+        // TODO: check POST request
+        /** @var Modules_JoomlaToolkit_Model_Row_Installation $installation */
+        $installation = (new Modules_JoomlaToolkit_Model_Broker_Installations())->findOne($this->_getParam('id'));
+        Modules_JoomlaToolkit_Helper_ScanVhost::scanInstallation($installation);
+        $this->_status->addInfo($this->lmsg('controllers.index.resetCacheItem.successMsg'));
+        $this->_redirect('index/view/id/' . $installation->id);
     }
 }

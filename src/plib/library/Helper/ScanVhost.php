@@ -33,6 +33,21 @@ class Modules_JoomlaToolkit_Helper_ScanVhost
 
     /**
      * @param Modules_JoomlaToolkit_Model_Row_Installation $installation
+     * @throws Zend_Db_Table_Row_Exception
+     */
+    public static function scanInstallation(Modules_JoomlaToolkit_Model_Row_Installation $installation)
+    {
+        $subscription = new pm_Domain($installation->subscriptionId);
+        $fullPath = Modules_JoomlaToolkit_CmsScanner::getAbsoluteVhostPath($subscription->getName()) . $installation->path;
+        $installation->sitename = static::_getInstallationName($fullPath);
+        //$installation->version = $installationInfo['version']; // TODO: get version
+        $installation->save();
+
+        static::scanExtensions($installation);
+    }
+
+    /**
+     * @param Modules_JoomlaToolkit_Model_Row_Installation $installation
      * @throws pm_Exception
      */
     public static function scanExtensions(Modules_JoomlaToolkit_Model_Row_Installation $installation)

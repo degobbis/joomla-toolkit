@@ -2,9 +2,12 @@
 
 $messages = [
     'controllers.index.list.pageTitle' => 'Joomla installations',
+    'controllers.index.view.resetCacheButtonTitle' => 'Synchronize',
+    'controllers.index.view.resetCacheButtonDesc' => 'If you changed any settings directly in Joomla, click this to synchronize them to Plesk',
     'controllers.index.scan.successMsg' => 'Joomla installations scanning finished successfully.',
     'controllers.index.scan.failureMsg' => 'Cannot scan Joomla installations: %%msg%%',
     'controllers.index.resetCache.successMsg' => 'Checking for updates was performed.',
+    'controllers.index.resetCacheItem.successMsg' => 'Settings were synchronized.',
     'controllers.index.update.successMsg' => 'Installations were updated.',
     'controllers.extension.list.pageTitle' => 'Manage extensions',
     'controllers.extension.updateItem.successMsg' => 'The extension %%name%% was successfully updated.',
@@ -27,6 +30,9 @@ $messages = [
     'components.list.extensions.versionColumn' => 'Version',
     'components.list.extensions.updateAvailable' => 'New version %%version%% is available.',
     'components.list.extensions.updateButton' => 'Update',
+
+    'components.form.installation.sitename' => 'Name',
+    'components.form.installation.path' => 'Installed in',
 
     'components.customButtons.customerJoomlaToolkit' => 'Joomla',
     'components.customButtons.customerJoomlaToolkitDescription' => 'Joomla Toolkit',
