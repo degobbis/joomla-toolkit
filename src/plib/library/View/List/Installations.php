@@ -34,6 +34,7 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
     {
         $overviewLink = pm_Context::getActionUrl('index', 'view');
         $extensionLink = pm_Context::getActionUrl('extension', 'list');
+        $updateCoreLink = pm_Context::getActionUrl('index', 'update-item');
 
         $broker = new Modules_JoomlaToolkit_Model_Broker_Installations();
         $select = $broker->select()
@@ -61,7 +62,7 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
                         $this->lmsg('components.list.installations.coreUpdateAvailable', [
                             'version' => $this->_view->escape($installation->newVersion)
                         ]) .
-                        "&nbsp;" . '<a href="#" class="jsUpdateItem" data-item-id="YWtpc21ldF8zLjEuNw==" wp-instances="[1]">' .
+                        "&nbsp;" . '<a href="' . $updateCoreLink . '/id/' . $installation->id . '/return/list" data-method="post" class="jsUpdateItem">' .
                             $this->lmsg('components.list.installations.coreUpdateButton') .
                         '</a>' .
                     '</div>';

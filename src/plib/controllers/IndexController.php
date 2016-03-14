@@ -111,6 +111,23 @@ class IndexController extends pm_Controller_Action
         ]);
     }
 
+    public function updateItemAction()
+    {
+        if (!$this->getRequest()->isPost()) {
+            throw new Modules_JoomlaToolkit_Exception_PostMethodRequiredException();
+        }
+        /** @var Modules_JoomlaToolkit_Model_Row_Installation $installation */
+        $installation = (new Modules_JoomlaToolkit_Model_Broker_Installations())->findOne($this->_getParam('id'));
+        $command = new Modules_JoomlaToolkit_JoomlaCli_Core($installation);
+        $command->call();
+        $subscription = new pm_Domain($installation->subscriptionId);
+        Modules_JoomlaToolkit_Helper_ScanVhost::scanInstallations($subscription->getId(), $subscription->getName());
+        $this->_status->addInfo($this->lmsg('controllers.index.updateItem.successMsg'));
+        if ($this->_getParam('return', 'list') == 'list') {
+            $this->_redirect('index/list');
+        }
+    }
+
     public function resetCacheAction()
     {
         if (!$this->getRequest()->isPost()) {

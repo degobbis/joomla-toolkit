@@ -9,6 +9,7 @@ $messages = [
     'controllers.index.resetCache.successMsg' => 'Checking for updates was performed.',
     'controllers.index.resetCacheItem.successMsg' => 'Settings were synchronized.',
     'controllers.index.update.successMsg' => 'Installations were updated.',
+    'controllers.index.updateItem.successMsg' => 'Installation was updated.',
     'controllers.extension.list.pageTitle' => 'Manage extensions',
     'controllers.extension.updateItem.successMsg' => 'The extension %%name%% was successfully updated.',
 
