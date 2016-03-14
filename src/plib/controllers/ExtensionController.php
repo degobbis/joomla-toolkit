@@ -24,4 +24,20 @@ class ExtensionController extends pm_Controller_Action
         $list->setDataUrl(['link' => pm_Context::getActionUrl('extension', 'list-data') . '/id/' . $installation->id]);
         return $list;
     }
+
+    public function updateItemAction()
+    {
+        if (!$this->getRequest()->isPost()) {
+            throw new Modules_JoomlaToolkit_Exception_PostMethodRequiredException();
+        }
+        /** @var Modules_JoomlaToolkit_Model_Row_Extension $extension */
+        $extension = (new Modules_JoomlaToolkit_Model_Broker_Extensions())->findOne($this->_getParam('id'));
+
+        // TODO: CALL CLI TO UPDATE THE EXTENSION
+
+        $this->_status->addInfo($this->lmsg('controllers.extension.updateItem.successMsg', [
+            'name' => $extension->name
+        ]));
+        $this->_redirect('extension/list/id/' . $extension->installationId);
+    }
 }

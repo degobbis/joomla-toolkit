@@ -12,6 +12,7 @@ class Modules_JoomlaToolkit_View_List_Extensions extends pm_View_List_Simple
 
     private function _fetchData(Modules_JoomlaToolkit_Model_Row_Installation $installation)
     {
+        $updateItemLink = pm_Context::getActionUrl('extension', 'update-item');
         $extensions = (new Modules_JoomlaToolkit_Model_Broker_Extensions())->findByField('installationId', $installation->id);
 
         $data = [];
@@ -20,7 +21,7 @@ class Modules_JoomlaToolkit_View_List_Extensions extends pm_View_List_Simple
             if ($extension['needsUpdate']) {
                 $version .= '<div class="hint-sub hint-attention update-available">' .
                     $this->lmsg('components.list.extensions.updateAvailable', ['version' => $extension['newVersion']]) .
-                    "&nbsp;" . '<a href="#" class="jsUpdateItem" data-item-id="YWtpc21ldF8zLjEuNw==" wp-instances="[1]">' .
+                    "&nbsp;" . '<a href="' . $updateItemLink . '/id/' . $extension->id . '" class="jsUpdateItem" data-method="post">' .
                         $this->lmsg('components.list.extensions.updateButton') .
                     '</a>' .
                 '</div>';

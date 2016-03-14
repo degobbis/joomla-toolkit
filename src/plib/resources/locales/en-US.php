@@ -7,6 +7,7 @@ $messages = [
     'controllers.index.resetCache.successMsg' => 'Checking for updates was performed.',
     'controllers.index.update.successMsg' => 'Installations were updated.',
     'controllers.extension.list.pageTitle' => 'Manage extensions',
+    'controllers.extension.updateItem.successMsg' => 'The extension %%name%% was successfully updated.',
 
     'components.list.installations.subscriptionColumn' => 'Subscription',
     'components.list.installations.sitenameColumn' => 'Name',
