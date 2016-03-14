@@ -38,6 +38,12 @@ class IndexController extends pm_Controller_Action
                 //'class' => 'sb-app-info', // TODO: Add class
                 'link' => pm_Context::getActionUrl('index', 'reset-cache-item') . '/id/' . $installation->id,
             ],
+            [
+                'title' => $this->lmsg('controllers.index.view.extensionsButtonTitle'),
+                'description' => $this->lmsg('controllers.index.view.extensionsButtonDesc'),
+                //'class' => 'sb-app-info', // TODO: Add class
+                'link' => pm_Context::getActionUrl('extension', 'list') . '/id/' . $installation->id,
+            ],
         ];
 
         $this->view->form = new Modules_JoomlaToolkit_View_Form_Installation([

@@ -6,10 +6,10 @@ class ExtensionController extends pm_Controller_Action
     {
         $installation = $this->_getInstallation();
         $this->view->pageTitle = $this->lmsg('controllers.extension.list.pageTitle', [
-            'url' => pm_Context::getActionUrl('index', 'list'),
+            'url' => pm_Context::getActionUrl('index', 'view') . '/id/' . $installation->id,
             'name' => $this->view->escape($installation->sitename),
         ]);
-        $this->view->list = $this->_getList($this->_getInstallation());
+        $this->view->list = $this->_getList($installation);
     }
 
     public function listDataAction()
