@@ -2,6 +2,8 @@
 
 class Modules_JoomlaToolkit_Helper_ScanVhost
 {
+    const JOOMLA_CORE_EXTENSION_NAME = 'files_joomla';
+
     /**
      * @param int $subscriptionId
      * @param string $subscriptionName
@@ -40,7 +42,6 @@ class Modules_JoomlaToolkit_Helper_ScanVhost
         $subscription = new pm_Domain($installation->subscriptionId);
         $fullPath = Modules_JoomlaToolkit_CmsScanner::getAbsoluteVhostPath($subscription->getName()) . $installation->path;
         $installation->sitename = static::_getInstallationName($fullPath);
-        //$installation->version = $installationInfo['version']; // TODO: get version
         $installation->save();
 
         static::scanExtensions($installation);
@@ -55,6 +56,15 @@ class Modules_JoomlaToolkit_Helper_ScanVhost
         $extensionsBroker = new Modules_JoomlaToolkit_Model_Broker_Extensions();
         $command = new Modules_JoomlaToolkit_JoomlaCli_Info($installation);
         foreach ($command->call() as $extensionInfo) {
+            if (static::JOOMLA_CORE_EXTENSION_NAME == $extensionInfo['name']) {
+                if (!is_null($extensionInfo['currentVersion'])) {
+                    $installation->version = $extensionInfo['currentVersion'];
+                }
+                $installation->newVersion = $extensionInfo['newVersion'];
+                $installation->needsUpdate = $extensionInfo['needsUpdate'];
+                $installation->save();
+                continue;
+            }
             $extension = $extensionsBroker->createRow();
             $extension->installationId = $installation->id;
             $extension->name = $extensionInfo['name'];

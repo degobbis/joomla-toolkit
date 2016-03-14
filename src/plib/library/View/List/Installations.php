@@ -42,7 +42,7 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
             ->joinLeft(
                 ['e' => 'extensions'],
                 '(e.installationId = i.id)',
-                'needsUpdate'
+                'needsUpdate as extensionNeedsUpdate'
             );
 
         if (!pm_Session::getClient()->isAdmin()) {
@@ -52,21 +52,33 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
         $installations = $broker->fetchAll($select);
 
         $data = [];
+        /** @var Modules_JoomlaToolkit_Model_Row_Installation $installation */
         foreach ($installations as $installation) {
             if (!isset($data[$installation->id])) {
+                $version = $installation->version;
+                if ($installation->needsUpdate) {
+                    $version .= '<div class="hint-sub hint-attention update-available">' .
+                        $this->lmsg('components.list.installations.coreUpdateAvailable', [
+                            'version' => $this->_view->escape($installation->newVersion)
+                        ]) .
+                        "&nbsp;" . '<a href="#" class="jsUpdateItem" data-item-id="YWtpc21ldF8zLjEuNw==" wp-instances="[1]">' .
+                            $this->lmsg('components.list.installations.coreUpdateButton') .
+                        '</a>' .
+                    '</div>';
+                }
                 $data[$installation->id] = [
                     'id' => $installation->id,
                     'sitename' => "<a href='{$overviewLink}/id/{$installation->id}'>{$this->_view->escape($installation->sitename)}</a>",
                     'subscription' => (new pm_Domain($installation->subscriptionId))->getName(),
                     'path' => $installation->path,
-                    'version' => $installation->version,
+                    'version' => $version,
                     'extensionsTotal' => 0,
                     'extensionsOutdated' => 0,
                 ];
             }
-            if (!is_null($installation->needsUpdate)) {
+            if (!is_null($installation->extensionNeedsUpdate)) {
                 $data[$installation->id]['extensionsTotal']++;
-                if ($installation->needsUpdate == 1) {
+                if ($installation->extensionNeedsUpdate == 1) {
                     $data[$installation->id]['extensionsOutdated']++;
                 }
             }
@@ -110,6 +122,7 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
         }
         $columns['version'] = [
             'title' => $this->lmsg('components.list.installations.versionColumn'),
+            'noEscape' => true,
         ];
         $columns['extensions'] = [
             'title' => $this->lmsg('components.list.installations.extensionsColumn'),
