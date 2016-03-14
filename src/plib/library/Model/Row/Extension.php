@@ -3,6 +3,7 @@
 /**
  * @property int id
  * @property int installationId
+ * @property int joomlaId
  * @property string name
  * @property string currentVersion
  * @property string newVersion

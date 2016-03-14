@@ -22,6 +22,13 @@ class Modules_JoomlaToolkit_CallSbinWrapper
         return static::_processResult($result);
     }
 
+    public static function callUpdateWrapper($file, array $args = [])
+    {
+        // TODO: use correct PHP version and user
+        $result = pm_ApiCli::callSbin('update-proxy.php', array_merge([$file], $args));
+        return static::_processResult($result);
+    }
+
     private static function _processResult($result)
     {
         if (0 != $result['code']) {

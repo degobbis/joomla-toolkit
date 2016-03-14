@@ -54,6 +54,11 @@ class Modules_JoomlaToolkit_Helper_ScanVhost
     public static function scanExtensions(Modules_JoomlaToolkit_Model_Row_Installation $installation)
     {
         $extensionsBroker = new Modules_JoomlaToolkit_Model_Broker_Extensions();
+
+        foreach ($extensionsBroker->findByField('installationId', $installation->id) as $extension) {
+            $extension->delete();
+        }
+
         $command = new Modules_JoomlaToolkit_JoomlaCli_Info($installation);
         foreach ($command->call() as $extensionInfo) {
             if (static::JOOMLA_CORE_EXTENSION_NAME == $extensionInfo['name']) {
@@ -67,6 +72,7 @@ class Modules_JoomlaToolkit_Helper_ScanVhost
             }
             $extension = $extensionsBroker->createRow();
             $extension->installationId = $installation->id;
+            $extension->joomlaId = $extensionInfo['extension_id'];
             $extension->name = $extensionInfo['name'];
             $extension->currentVersion = $extensionInfo['currentVersion'];
             $extension->newVersion = $extensionInfo['newVersion'];

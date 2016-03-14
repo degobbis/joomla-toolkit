@@ -15,7 +15,7 @@ abstract class Modules_JoomlaToolkit_JoomlaCli_AbstractCommand
 
     protected function _call(array $args = [])
     {
-        return Modules_JoomlaToolkit_CallSbinWrapper::callPhp(
+        return Modules_JoomlaToolkit_CallSbinWrapper::callUpdateWrapper(
             $this->_getInstallationPath() . '/cli/update.php',
             $args
         );

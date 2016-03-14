@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS `installations` (
 CREATE TABLE IF NOT EXISTS `extensions` (
   `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   `installationId` INTEGER NOT NULL REFERENCES installations(id) ON DELETE CASCADE,
+  `joomlaId` INT,
   `name` TEXT NOT NULL,
   `currentVersion` TEXT,
   `newVersion` TEXT,
