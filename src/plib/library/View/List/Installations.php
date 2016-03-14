@@ -35,6 +35,7 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
         $overviewLink = pm_Context::getActionUrl('index', 'view');
         $extensionLink = pm_Context::getActionUrl('extension', 'list');
         $updateCoreLink = pm_Context::getActionUrl('index', 'update-item');
+        $updateExtensionsLink = pm_Context::getActionUrl('extension', 'update');
 
         $broker = new Modules_JoomlaToolkit_Model_Broker_Installations();
         $select = $broker->select()
@@ -92,7 +93,7 @@ class Modules_JoomlaToolkit_View_List_Installations extends pm_View_List_Simple
             if ($item['extensionsOutdated'] > 0) {
                 $extensions .= '<div class="hint-sub hint-attention update-available">' .
                     $this->lmsg('components.list.installations.extensionsUpdateAvailable', ['outdated' => $item['extensionsOutdated']]) .
-                    "&nbsp;" . '<a href="#" class="jsUpdateItem" data-item-id="YWtpc21ldF8zLjEuNw==" wp-instances="[1]">' .
+                    "&nbsp;" . '<a href="' . $updateExtensionsLink . '/id/' . $installation->id . '" data-method="post" class="jsUpdateItem">' .
                         $this->lmsg('components.list.installations.extensionsUpdateButton') .
                     '</a>' .
                 '</div>';

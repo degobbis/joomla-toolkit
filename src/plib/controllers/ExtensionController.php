@@ -32,6 +32,23 @@ class ExtensionController extends pm_Controller_Action
         return $list;
     }
 
+    public function updateAction()
+    {
+        if (!$this->getRequest()->isPost()) {
+            throw new Modules_JoomlaToolkit_Exception_PostMethodRequiredException();
+        }
+        /** @var Modules_JoomlaToolkit_Model_Row_Installation $installation */
+        $installation = (new Modules_JoomlaToolkit_Model_Broker_Installations())->findOne($this->_getParam('id'));
+        $command = new Modules_JoomlaToolkit_JoomlaCli_ExtensionsCommand($installation);
+        $command->call();
+        Modules_JoomlaToolkit_Helper_ScanVhost::scanExtensions($installation);
+
+        $this->_status->addInfo($this->lmsg('controllers.extension.update.successMsg', [
+            'name' => $installation->name
+        ]));
+        $this->_redirect('extension/list');
+    }
+
     public function updateItemAction()
     {
         if (!$this->getRequest()->isPost()) {
@@ -39,11 +56,11 @@ class ExtensionController extends pm_Controller_Action
         }
         /** @var Modules_JoomlaToolkit_Model_Row_Extension $extension */
         $extension = (new Modules_JoomlaToolkit_Model_Broker_Extensions())->findOne($this->_getParam('id'));
-        $instalation = (new Modules_JoomlaToolkit_Model_Broker_Installations())->findOne($extension->installationId);
+        $installation = (new Modules_JoomlaToolkit_Model_Broker_Installations())->findOne($extension->installationId);
 
-        $command = new Modules_JoomlaToolkit_JoomlaCli_ExtensionCommand($extension);
+        $command = new Modules_JoomlaToolkit_JoomlaCli_Extension($extension);
         $command->call();
-        Modules_JoomlaToolkit_Helper_ScanVhost::scanExtensions($instalation);
+        Modules_JoomlaToolkit_Helper_ScanVhost::scanExtensions($installation);
 
         $this->_status->addInfo($this->lmsg('controllers.extension.updateItem.successMsg', [
             'name' => $extension->name

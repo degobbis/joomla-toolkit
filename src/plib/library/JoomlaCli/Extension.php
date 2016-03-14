@@ -1,6 +1,6 @@
 <?php
 
-class Modules_JoomlaToolkit_JoomlaCli_ExtensionCommand extends Modules_JoomlaToolkit_JoomlaCli_AbstractCommand
+class Modules_JoomlaToolkit_JoomlaCli_Extension extends Modules_JoomlaToolkit_JoomlaCli_AbstractCommand
 {
     /**
      * @var Modules_JoomlaToolkit_Model_Row_Extension

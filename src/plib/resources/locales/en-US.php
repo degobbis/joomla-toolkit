@@ -11,6 +11,7 @@ $messages = [
     'controllers.index.update.successMsg' => 'Installations were updated.',
     'controllers.index.updateItem.successMsg' => 'Installation was updated.',
     'controllers.extension.list.pageTitle' => 'Manage extensions of <a href="%%url%%">%%name%%</a>',
+    'controllers.extension.update.successMsg' => 'The extensions of %%name%% were successfully updated.',
     'controllers.extension.updateItem.successMsg' => 'The extension %%name%% was successfully updated.',
 
     'components.list.installations.subscriptionColumn' => 'Subscription',
