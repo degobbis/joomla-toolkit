@@ -26,10 +26,12 @@ abstract class Modules_JoomlaToolkit_JoomlaCli_AbstractCommand
         // TODO: remove when will be available in core
         $fileManager = new pm_ServerFileManager();
         $file = $this->_getInstallationPath() . '/cli/update.php';
-        /*if ($fileManager->fileExists($file)) {
+
+/*        if ($fileManager->fileExists($file)) {
             return;
-        }*/
-        $content = file_get_contents('https://raw.githubusercontent.com/joomla-projects/cli-update/develop/src/cli/update.php');
+        } */
+        
+        $content = file_get_contents('https://raw.githubusercontent.com/JoomTools/cli-update/bc-j25/src/cli/update.php');
         $fileManager->filePutContents($file, $content);
     }
 }

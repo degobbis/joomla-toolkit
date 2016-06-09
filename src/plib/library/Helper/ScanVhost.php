@@ -22,6 +22,12 @@ class Modules_JoomlaToolkit_Helper_ScanVhost
             if (Modules_JoomlaToolkit_CmsScanner::NAME_JOOMLA != $installationInfo['name']) {
                 continue;
             }
+
+            // Check if Version is lt 2.5
+            if (version_compare($installationInfo['version'], '2.5', '<')){
+                continue;
+            }
+
             $installation = $installationsBroker->createRow();
             $installation->subscriptionId = $subscriptionId;
             $installation->sitename = static::_getInstallationName($installationInfo['path']);

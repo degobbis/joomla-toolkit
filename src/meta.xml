@@ -2,9 +2,9 @@
 <module>
   <id>joomla-toolkit</id>
   <name>Joomla Toolkit</name>
-  <description>Mass manage Joomla installations</description>
+  <description>Mass manage Joomla installations (B/C with v2.5.28 by JoomTools)</description>
   <version>1.0</version>
-  <release>1</release>
+  <release>2</release>
   <vendor>Plesk</vendor>
   <url>http://plesk.com</url>
   <plesk_min_version>12.5.30</plesk_min_version>
